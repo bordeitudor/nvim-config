@@ -4,6 +4,7 @@ local Plug = vim.fn["plug#"]
 vim.call("plug#begin")
 
 Plug 'EdenEast/nightfox.nvim'
+Plug 'Valloric/YouCompleteMe'
 
 vim.call("plug#end")
 
@@ -28,7 +29,8 @@ vim.opt.softtabstop= -1
 
 -- Misc
 vim.opt.swapfile = false
-vim.opt.mouse = "a";
+vim.opt.mouse = "a"
+vim.opt.encoding = "utf-8"
 
 -- Visual
 vim.opt.cmdheight = 1
@@ -71,9 +73,44 @@ vim.keymap.set({"n"}, "<C-q>", "<Esc>0")
 vim.keymap.set({"n"}, "<C-e>", "<Esc>$", {remap=true})
 
 -- Moving line up, Moving line down
-vim.keymap.set({"i", "n", "v"}, "<C-r>", function()
+vim.keymap.set({"i", "n", "v"}, "<C-j>", function()
     vim.cmd(":move -2");
 end)
-vim.keymap.set({"i", "n", "v"}, "<C-f>", function()
+vim.keymap.set({"i", "n", "v"}, "<C-k>", function()
     vim.cmd(":move +1")
 end, {remap=true})
+
+-- Delete whole word
+vim.keymap.set({"i"}, "<C-h>", function()
+    vim.api.nvim_input("<Esc>dawi")
+end, {remap=true})
+
+-- Go backwards
+vim.keymap.set({"n"}, "C-h", function()
+    vim.api.nvim_input("b")
+end)
+
+-- Undo
+vim.keymap.set({"n", "v"}, "<C-z>", function()
+    vim.cmd(":undo")
+end)
+
+vim.keymap.set({"i"}, "<C-z>", function()
+    vim.api.nvim_input("<Esc>")
+    vim.cmd(":undo")
+    vim.api.nvim_input("i")
+end)
+
+-- Autocomplete
+
+-- Go to definition
+vim.keymap.set({"i", "n", "v"}, "<C-f>", function()
+    vim.cmd(":YcmCompleter GoTo expand(\"<cword>\")")
+end)
+
+-- Go to symbol
+vim.keymap.set({"i", "n", "v"}, "<C-c-f>", function()
+    vim.cmd(":YcmCompleter GoTo expand(\"<cword>\")")
+end)
+
+vim.g.netrw_keepdir = 0
